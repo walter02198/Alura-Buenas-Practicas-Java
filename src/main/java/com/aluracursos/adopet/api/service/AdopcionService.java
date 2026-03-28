@@ -5,7 +5,6 @@ import com.aluracursos.adopet.api.model.Adopcion;
 import com.aluracursos.adopet.api.model.StatusAdopcion;
 import com.aluracursos.adopet.api.repository.AdopcionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
@@ -19,7 +18,7 @@ public class AdopcionService {
     private AdopcionRepository repository;
 
     @Autowired
-    private JavaMailSender emailSender;
+    private EmailService emailService;
 
     public void solicitar(Adopcion adopcion) {
 
@@ -55,12 +54,10 @@ public class AdopcionService {
         adopcion.setStatus(StatusAdopcion.ESPERANDO_EVALUACION);
         repository.save(adopcion);
 
-        SimpleMailMessage email = new SimpleMailMessage();
-        email.setFrom("adopet@email.com");
-        email.setTo(adopcion.getMascota().getRefugio().getEmail());
-        email.setSubject("Solicitación de adopción");
-        email.setText("Hola " + adopcion.getMascota().getRefugio().getNombre() +"!\n\nUna solicitud de adopción fue registrada hoy para la mascota: " + adopcion.getMascota().getNombre() +". \nPor favor, evaluarla para aprobación o reprobación.");
-        emailSender.send(email);
+        emailService.enviarEmail(
+                adopcion.getMascota().getRefugio().getEmail(),
+                "Solicitación de adopción",
+                "Hola " + adopcion.getMascota().getRefugio().getNombre() + "!\n\nUna solicitud de adopción fue registrada hoy para la mascota: " + adopcion.getMascota().getNombre() + ". \nPor favor, evaluarla para aprobación o reprobación.");
 
     }
 
@@ -68,12 +65,11 @@ public class AdopcionService {
         adopcion.setStatus(StatusAdopcion.APROBADO);
         repository.save(adopcion);
 
-        SimpleMailMessage email = new SimpleMailMessage();
-        email.setFrom("adopet@email.com");
-        email.setTo(adopcion.getTutor().getEmail());
-        email.setSubject("Adopción aprobada");
-        email.setText("Felicitaciones " + adopcion.getTutor().getNombre() + "!\n\nSu adopción de la mascota " + adopcion.getMascota().getNombre() + ", solicitada el dia " + adopcion.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) + ", fue aprobada.\nPor favor, entrar en contacto con el refugio " + adopcion.getMascota().getRefugio().getNombre() + " para ir a buscar a su mascota.");
-        emailSender.send(email);
+        emailService.enviarEmail(
+                adopcion.getTutor().getEmail(),
+                "Adopción aprobada",
+                "Felicitaciones " + adopcion.getTutor().getNombre() + "!\n\nSu adopción de la mascota " + adopcion.getMascota().getNombre() + ", solicitada el dia " + adopcion.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) + ", fue aprobada.\nPor favor, entrar en contacto con el refugio " + adopcion.getMascota().getRefugio().getNombre() + " para ir a buscar a su mascota.");
+
 
     }
 
@@ -81,11 +77,10 @@ public class AdopcionService {
         adopcion.setStatus(StatusAdopcion.REPROBADO);
         repository.save(adopcion);
 
-        SimpleMailMessage email = new SimpleMailMessage();
-        email.setFrom("adopet@email.com");
-        email.setTo(adopcion.getTutor().getEmail());
-        email.setSubject("Adopción reprobada");
-        email.setText("Hola " + adopcion.getTutor().getNombre() + "!\n\nInfelizmente su adopción de la mascota " + adopcion.getMascota().getNombre() + ", solicitada el dia " + adopcion.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) + ", fue reprobada por el refugio " + adopcion.getMascota().getRefugio().getNombre() + " con la seguiente justificativa: " + adopcion.getJustificativaStatus());
-        emailSender.send(email);
+        emailService.enviarEmail(
+                adopcion.getTutor().getEmail(),
+                "Adopción reprobada",
+                "Hola " + adopcion.getTutor().getNombre() + "!\n\nInfelizmente su adopción de la mascota " + adopcion.getMascota().getNombre() + ", solicitada el dia " + adopcion.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) + ", fue reprobada por el refugio " + adopcion.getMascota().getRefugio().getNombre() + " con la seguiente justificativa: " + adopcion.getJustificativaStatus());
+
     }
 }
