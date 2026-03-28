@@ -77,7 +77,15 @@ public class AdopcionService {
 
     }
 
-    public void desaprobar() {
+    public void reprobar(Adopcion adopcion) {
+        adopcion.setStatus(StatusAdopcion.REPROBADO);
+        repository.save(adopcion);
 
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setFrom("adopet@email.com");
+        email.setTo(adopcion.getTutor().getEmail());
+        email.setSubject("Adopción reprobada");
+        email.setText("Hola " + adopcion.getTutor().getNombre() + "!\n\nInfelizmente su adopción de la mascota " + adopcion.getMascota().getNombre() + ", solicitada el dia " + adopcion.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) + ", fue reprobada por el refugio " + adopcion.getMascota().getRefugio().getNombre() + " con la seguiente justificativa: " + adopcion.getJustificativaStatus());
+        emailSender.send(email);
     }
 }
