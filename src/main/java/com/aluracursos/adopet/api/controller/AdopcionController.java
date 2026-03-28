@@ -42,17 +42,8 @@ public class AdopcionController {
 
     @PutMapping("/aprobar")
     @Transactional
-    public ResponseEntity<String> aprovar(@RequestBody @Valid Adopcion adopcion) {
-        adopcion.setStatus(StatusAdopcion.APROBADO);
-        repository.save(adopcion);
-
-        SimpleMailMessage email = new SimpleMailMessage();
-        email.setFrom("adopet@email.com");
-        email.setTo(adopcion.getTutor().getEmail());
-        email.setSubject("Adopción aprobada");
-        email.setText("Felicitaciones " + adopcion.getTutor().getNombre() + "!\n\nSu adopción de la mascota " + adopcion.getMascota().getNombre() + ", solicitada el dia " + adopcion.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) + ", fue aprobada.\nPor favor, entrar en contacto con el refugio " + adopcion.getMascota().getRefugio().getNombre() + " para ir a buscar a su mascota.");
-        emailSender.send(email);
-
+    public ResponseEntity<String> aprobar(@RequestBody @Valid Adopcion adopcion) {
+        this.adopcionService.aprobar(adopcion);
         return ResponseEntity.ok().build();
     }
 
