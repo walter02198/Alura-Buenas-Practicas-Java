@@ -32,7 +32,7 @@ public class AdopcionController {
         try{
 
             this.adopcionService.solicitar(adopcion);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok("Solicitud enviada satisfactoriamente");
         } catch (ValidacionException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -44,14 +44,14 @@ public class AdopcionController {
     @Transactional
     public ResponseEntity<String> aprobar(@RequestBody @Valid Adopcion adopcion) {
         this.adopcionService.aprobar(adopcion);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Solicitud aprobada satisfactoriamente");
     }
 
     @PutMapping("/reprobar")
     @Transactional
     public ResponseEntity<String> reprobar(@RequestBody @Valid Adopcion adopcion) {
         this.adopcionService.reprobar(adopcion);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Solicitud reprobada");
     }
 
 }
