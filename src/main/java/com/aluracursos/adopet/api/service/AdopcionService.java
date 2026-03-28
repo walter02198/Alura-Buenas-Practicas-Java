@@ -23,19 +23,20 @@ public class AdopcionService {
     public void solicitar(Adopcion adopcion) {
 
         if (adopcion.getMascota().getAdoptada() == true) {
-
             throw new ValidacionException("Mascota ya fue adoptada!");
 
         } else {
             List<Adopcion> adopciones = repository.findAll();
             for (Adopcion a : adopciones) {
                 if (a.getTutor() == adopcion.getTutor() && a.getStatus() == StatusAdopcion.ESPERANDO_EVALUACION) {
-                    return ResponseEntity.badRequest().body("Tutor ya tiene otra adopción esperando evaluación!");
+                    throw new ValidacionException("Tutor ya tiene otra adopción esperando evaluación!");
+
                 }
             }
             for (Adopcion a : adopciones) {
                 if (a.getMascota() == adopcion.getMascota() && a.getStatus() == StatusAdopcion.ESPERANDO_EVALUACION) {
-                    return ResponseEntity.badRequest().body("Mascota ya esta esperando evaluación para ser adoptada!");
+                    throw new ValidacionException("Mascota ya esta esperando evaluación para ser adoptada!!");
+
                 }
             }
             for (Adopcion a : adopciones) {
@@ -44,7 +45,8 @@ public class AdopcionService {
                     contador = contador + 1;
                 }
                 if (contador == 5) {
-                    return ResponseEntity.badRequest().body("Tutor llegó al limite máximo de 5 adopciones!");
+                    throw new ValidacionException("Tutor llegó al limite máximo de 5 adopciones!");
+
                 }
             }
         }

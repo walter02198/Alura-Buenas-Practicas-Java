@@ -1,5 +1,6 @@
 package com.aluracursos.adopet.api.controller;
 
+import com.aluracursos.adopet.api.exception.ValidacionException;
 import com.aluracursos.adopet.api.model.Adopcion;
 import com.aluracursos.adopet.api.model.StatusAdopcion;
 import com.aluracursos.adopet.api.repository.AdopcionRepository;
@@ -28,9 +29,15 @@ public class AdopcionController {
     @Transactional
 
     public ResponseEntity<String> solicitar(@RequestBody @Valid Adopcion adopcion) {
-        this.adopcionService.solicitar(adopcion);
+        try{
 
-        return ResponseEntity.ok().build();
+            this.adopcionService.solicitar(adopcion);
+            return ResponseEntity.ok().build();
+        } catch (ValidacionException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+
     }
 
     @PutMapping("/aprobar")
