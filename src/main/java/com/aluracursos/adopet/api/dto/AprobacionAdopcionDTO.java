@@ -1,4 +1,4 @@
 package com.aluracursos.adopet.api.dto;
 
-public record AprobacionAdopcionDTO(Long idSolicitud) {
+public record AprobacionAdopcionDTO(Long idAdopcion) {
 }
