@@ -34,13 +34,11 @@ public class AdopcionService {
 
 
     public void solicitar( SoilcitudAdopcionDTO dto) {
-
         Mascota mascota = mascotaRepository.getReferenceById(dto.idMascota());
         Tutor tutor = tutorRepository.getReferenceById(dto.idTutor());
 
-        if (mascota.getAdoptada() == true) {
+        if (mascota.getAdoptada()) {
             throw new ValidacionException("Mascota ya fue adoptada!");
-
         } else {
             List<Adopcion> adopciones = adopcionRepository.findAll();
             for (Adopcion a : adopciones) {
