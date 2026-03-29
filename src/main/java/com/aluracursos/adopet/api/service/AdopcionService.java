@@ -1,12 +1,14 @@
 package com.aluracursos.adopet.api.service;
 
+import com.aluracursos.adopet.api.dto.AprobacionAdopcionDTO;
+import com.aluracursos.adopet.api.dto.ReprobacionAdopcionDTO;
+import com.aluracursos.adopet.api.dto.SoilcitudAdopcionDTO;
 import com.aluracursos.adopet.api.exception.ValidacionException;
 import com.aluracursos.adopet.api.model.Adopcion;
 import com.aluracursos.adopet.api.model.StatusAdopcion;
 import com.aluracursos.adopet.api.repository.AdopcionRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,7 +22,7 @@ public class AdopcionService {
     @Autowired
     private EmailService emailService;
 
-    public void solicitar(Adopcion adopcion) {
+    public void solicitar( SoilcitudAdopcionDTO dto) {
 
         if (adopcion.getMascota().getAdoptada() == true) {
             throw new ValidacionException("Mascota ya fue adoptada!");
@@ -61,7 +63,7 @@ public class AdopcionService {
 
     }
 
-    public void aprobar(Adopcion adopcion) {
+    public void aprobar(@Valid AprobacionAdopcionDTO dto) {
         adopcion.setStatus(StatusAdopcion.APROBADO);
         repository.save(adopcion);
 
@@ -73,7 +75,7 @@ public class AdopcionService {
 
     }
 
-    public void reprobar(Adopcion adopcion) {
+    public void reprobar(@Valid ReprobacionAdopcionDTO dto) {
         adopcion.setStatus(StatusAdopcion.REPROBADO);
         repository.save(adopcion);
 
