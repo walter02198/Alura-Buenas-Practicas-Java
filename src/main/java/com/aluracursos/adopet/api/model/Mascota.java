@@ -17,19 +17,19 @@ public class Mascota {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
+
     @Column(name = "tipo")
     private TipoMascota tipo;
 
-    @NotBlank
+
     @Column(name = "nombre")
     private String nombre;
 
-    @NotBlank
+
     @Column(name = "raza")
     private String raza;
 
-    @NotNull
+
     @Column(name = "edad")
     private Integer edad;
 
