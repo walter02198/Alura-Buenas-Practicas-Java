@@ -109,7 +109,7 @@ public class Adopcion {
         return justificativaStatus;
     }
 
-    public void setJustificativaStatus(String justificativaStatus) {
+    public void setJustificacionStatus(String justificativaStatus) {
         this.justificativaStatus = justificativaStatus;
     }
 }
