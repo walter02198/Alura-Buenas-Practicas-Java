@@ -1,5 +1,6 @@
 package com.aluracursos.adopet.api.controller;
 
+import com.aluracursos.adopet.api.dto.DatosDetallesMascota;
 import com.aluracursos.adopet.api.model.Mascota;
 import com.aluracursos.adopet.api.repository.MascotaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,12 @@ public class MascotaController {
     private MascotaRepository repository;
 
     @GetMapping
-    public ResponseEntity<List<Mascota>> listarTodasDisponibles() {
+    public ResponseEntity<List<DatosDetallesMascota>> listarTodasDisponibles() {
         List<Mascota> mascotas = repository.findAll();
-        List<Mascota> disponibles = new ArrayList<>();
+        List<DatosDetallesMascota> disponibles = new ArrayList<>();
         for (Mascota mascota : mascotas) {
             if (mascota.getAdoptada() == false) {
-                disponibles.add(mascota);
+                disponibles.add(new DatosDetallesMascota(mascota));
             }
         }
         return ResponseEntity.ok(disponibles);
