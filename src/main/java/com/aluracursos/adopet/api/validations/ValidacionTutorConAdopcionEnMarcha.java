@@ -1,6 +1,6 @@
 package com.aluracursos.adopet.api.validations;
 
-import com.aluracursos.adopet.api.dto.SoilcitudAdopcionDTO;
+import com.aluracursos.adopet.api.dto.SolicitudAdopcionDTO;
 import com.aluracursos.adopet.api.exception.ValidacionException;
 import com.aluracursos.adopet.api.model.Adopcion;
 import com.aluracursos.adopet.api.model.StatusAdopcion;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class ValidacionTutorConAdopcionEnMarcha {
+public class ValidacionTutorConAdopcionEnMarcha implements ValidacionesSolicitudAdopcion {
 
     @Autowired
     private TutorRepository tutorRepository;
@@ -22,7 +22,7 @@ public class ValidacionTutorConAdopcionEnMarcha {
     private AdopcionRepository adopcionRepository;
 
 
-    public void validacion(SoilcitudAdopcionDTO dto) {
+    public void validar(SolicitudAdopcionDTO dto) {
         Tutor tutor = tutorRepository.getReferenceById(dto.idTutor());
         List<Adopcion> adopciones = adopcionRepository.findAll();
         for (Adopcion a : adopciones) {
@@ -31,4 +31,6 @@ public class ValidacionTutorConAdopcionEnMarcha {
             }
         }
     }
+
+
 }
