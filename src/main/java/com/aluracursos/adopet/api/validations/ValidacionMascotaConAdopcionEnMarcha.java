@@ -13,24 +13,22 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class ValidacionMascotaConAdopcionEnMarcha implements ValidacionesSolicitudAdopcion{
+public class ValidacionMascotaConAdopcionEnMarcha implements ValidacionesSolicitudAdopcion {
 
     @Autowired
     private AdopcionRepository adopcionRepository;
 
-    @Autowired
-    private MascotaRepository mascotaRepository;
-
 
     public void validar(SolicitudAdopcionDTO dto) {
-        Mascota mascota = mascotaRepository.getReferenceById(dto.idMascota());
-        List<Adopcion> adopciones = adopcionRepository.findAll();
-        for (Adopcion a : adopciones) {
-            if (a.getMascota() == mascota && a.getStatus() == StatusAdopcion.ESPERANDO_EVALUACION) {
-                throw new ValidacionException("Mascota ya esta esperando evaluación para ser adoptada!!");
-            }
+
+        boolean esxisteMascotaConAdopcionEsperandoEvaluacion =
+                adopcionRepository.existsByMascotaIdAndStatus(dto.idMascota(),
+                        StatusAdopcion.ESPERANDO_EVALUACION);
+        if (esxisteMascotaConAdopcionEsperandoEvaluacion) {
+            throw new ValidacionException("Mascota ya esta esperando evaluación para ser adoptada!!");
         }
     }
-
-
 }
+
+
+
