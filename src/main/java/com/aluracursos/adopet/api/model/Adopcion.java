@@ -1,10 +1,6 @@
 package com.aluracursos.adopet.api.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -28,15 +24,22 @@ public class Adopcion {
     @OneToOne(fetch = FetchType.LAZY)
     private Mascota mascota;
 
-    
+
     private String motivo;
 
     @Enumerated(EnumType.STRING)
-
     private StatusAdopcion status;
 
+    private String justificacionStatus;
 
-    private String justificativaStatus;
+
+    public Adopcion(Tutor tutor, Mascota mascota, String motivo) {
+        this.tutor = tutor;
+        this.mascota = mascota;
+        this.motivo = motivo;
+        this.fecha = LocalDateTime.now();
+        this.status = StatusAdopcion.ESPERANDO_EVALUACION;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -55,10 +58,6 @@ public class Adopcion {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public LocalDateTime getFecha() {
         return fecha;
     }
@@ -71,39 +70,20 @@ public class Adopcion {
         return tutor;
     }
 
-    public void setTutor(Tutor tutor) {
-        this.tutor = tutor;
-    }
-
     public Mascota getMascota() {
         return mascota;
-    }
-
-    public void setMascota(Mascota mascota) {
-        this.mascota = mascota;
     }
 
     public String getMotivo() {
         return motivo;
     }
 
-    public void setMotivo(String motivo) {
-        this.motivo = motivo;
-    }
-
     public StatusAdopcion getStatus() {
         return status;
     }
 
-    public void setStatus(StatusAdopcion status) {
-        this.status = status;
-    }
-
-    public String getJustificativaStatus() {
-        return justificativaStatus;
-    }
-
-    public void setJustificacionStatus(String justificativaStatus) {
-        this.justificativaStatus = justificativaStatus;
+    public String getJustificacionStatus() {
+        return justificacionStatus;
     }
 }
+

@@ -44,13 +44,8 @@ public class AdopcionService {
 
         validaciones.forEach(v->v.validar(dto));
 
-        Adopcion adopcion = new Adopcion();
-        adopcion.setFecha(LocalDateTime.now());
-        adopcion.setStatus(StatusAdopcion.ESPERANDO_EVALUACION);
+        Adopcion adopcion = new Adopcion(tutor,mascota,dto.motivo());
 
-        adopcion.setTutor(tutor);
-        adopcion.setMascota(mascota);
-        adopcion.setMotivo(dto.motivo());
         adopcionRepository.save(adopcion);
 
         emailService.enviarEmail(
@@ -81,7 +76,7 @@ public class AdopcionService {
         emailService.enviarEmail(
                 adopcion.getTutor().getEmail(),
                 "Adopción reprobada",
-                "Hola " + adopcion.getTutor().getNombre() + "!\n\nInfelizmente su adopción de la mascota " + adopcion.getMascota().getNombre() + ", solicitada el dia " + adopcion.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) + ", fue reprobada por el refugio " + adopcion.getMascota().getRefugio().getNombre() + " con la seguiente justificativa: " + adopcion.getJustificativaStatus());
+                "Hola " + adopcion.getTutor().getNombre() + "!\n\nInfelizmente su adopción de la mascota " + adopcion.getMascota().getNombre() + ", solicitada el dia " + adopcion.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) + ", fue reprobada por el refugio " + adopcion.getMascota().getRefugio().getNombre() + " con la seguiente justificativa: " + adopcion.getJustificacionStatus());
 
     }
 }
