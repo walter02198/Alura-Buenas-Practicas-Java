@@ -15,33 +15,27 @@ public class Adopcion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "fecha")
+
     private LocalDateTime fecha;
 
 
     @ManyToOne
-    @JsonBackReference("tutor_adopciones")
-    @JoinColumn(name = "tutor_id")
     private Tutor tutor;
 
 
     @OneToOne
-    @JoinColumn(name = "mascota_id")
-    @JsonManagedReference("adopcion_mascotas")
     private Mascota mascota;
 
-
-    @Column(name = "motivo")
+    
     private String motivo;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+
     private StatusAdopcion status;
 
-    @Column(name = "justificativa_status")
+
     private String justificativaStatus;
 
     @Override
