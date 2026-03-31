@@ -1,6 +1,7 @@
 package com.aluracursos.adopet.api.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -39,6 +40,9 @@ public class Adopcion {
         this.motivo = motivo;
         this.fecha = LocalDateTime.now();
         this.status = StatusAdopcion.ESPERANDO_EVALUACION;
+    }
+
+    public Adopcion() {
     }
 
     @Override
@@ -84,6 +88,15 @@ public class Adopcion {
 
     public String getJustificacionStatus() {
         return justificacionStatus;
+    }
+
+    public void marcarComoAprobada() {
+        this.status = StatusAdopcion.APROBADO;
+    }
+
+    public void marcarComoReprobada(@NotBlank String justificacion) {
+        this.status = StatusAdopcion.REPROBADO;
+        this.justificacionStatus = justificacion;
     }
 }
 

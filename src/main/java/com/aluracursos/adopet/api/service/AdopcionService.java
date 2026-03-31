@@ -57,7 +57,7 @@ public class AdopcionService {
 
     public void aprobar(@Valid AprobacionAdopcionDTO dto) {
         Adopcion adopcion = adopcionRepository.getReferenceById(dto.idAdopcion());
-        adopcion.setStatus(StatusAdopcion.APROBADO);
+        adopcion.marcarComoAprobada();
 
         emailService.enviarEmail(
                 adopcion.getTutor().getEmail(),
@@ -70,8 +70,7 @@ public class AdopcionService {
     public void reprobar(@Valid ReprobacionAdopcionDTO dto) {
 
         Adopcion adopcion = adopcionRepository.getReferenceById(dto.idAdopcion());
-        adopcion.setStatus(StatusAdopcion.REPROBADO);
-        adopcion.setJustificacionStatus(dto.justificacion());
+        adopcion.marcarComoReprobada(dto.justificacion());
 
         emailService.enviarEmail(
                 adopcion.getTutor().getEmail(),
