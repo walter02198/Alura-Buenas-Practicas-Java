@@ -4,7 +4,7 @@ import com.aluracursos.adopet.api.dto.MascotaDto;
 import com.aluracursos.adopet.api.dto.RefugioDto;
 import com.aluracursos.adopet.api.dto.RegistroRefugioDto;
 import com.aluracursos.adopet.api.dto.RegistroMascotaDto;
-import com.aluracursos.adopet.api.exceptions.ValidacionException;
+import com.aluracursos.adopet.api.exception.ValidacionException;
 import com.aluracursos.adopet.api.model.Refugio;
 import com.aluracursos.adopet.api.service.MascotaService;
 import com.aluracursos.adopet.api.service.RefugioService;
